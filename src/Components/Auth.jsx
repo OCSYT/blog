@@ -1,37 +1,36 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function Auth() {
-  const headersList = headers();
-  const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-  const baseUrl = `${protocol}://${host}`;
-
-  const cookieStore = cookies();
-  const cookieString = cookieStore
+export default async function Authenticate() {
+  const CookieStore = await cookies();
+  const CookieString = CookieStore
     .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .map((cookie) => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
     .join("; ");
 
+  const Protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+  const Host = process.env.HOST || "localhost:3000";
+  const BaseUrl = `${Protocol}://${Host}`;
+
   try {
-    const userRes = await fetch(`${baseUrl}/api/auth/discord/user`, {
+    const UserResponse = await fetch(`${BaseUrl}/api/auth/discord/user`, {
       headers: {
-        Cookie: cookieString,
+        Cookie: CookieString,
       },
       cache: "no-store",
     });
 
-    if (!userRes.ok) {
-      console.error("API Error:", userRes.status, userRes.statusText);
-      redirect("/api/auth/discord");
+    if (!UserResponse.ok) {
+      console.error("API Error:", UserResponse.status, UserResponse.statusText);
+      return redirect("/api/auth/discord");
     }
 
-    const userData = await userRes.json();
-    console.log("User Data:", userData);
+    const UserData = await UserResponse.json();
+    console.log("User Data:", UserData);
 
-    return userData;
-  } catch (error) {
-    console.error("Fetch Error:", error);
-    redirect("/api/auth/discord");
+    return UserData;
+  } catch (Error) {
+    console.error("Fetch Error:", Error);
+    return redirect("/api/auth/discord");
   }
 }
