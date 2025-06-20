@@ -32,6 +32,9 @@ export default async function PostPage({ params }) {
   );
 
   const AuthUser = await Auth();
+  if (!AuthUser) {
+    return redirect("/api/auth/discord");
+  }
 
   return (
     <main className="max-w-3xl mx-auto p-8 space-y-6">

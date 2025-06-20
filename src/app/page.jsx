@@ -11,6 +11,9 @@ const AllowedUserIDs = process.env.ALLOWED_USER_IDS
 
 export default async function Page({ searchParams }) {
   const AuthUser = await Auth();
+  if (!AuthUser) {
+    return redirect("/api/auth/discord");
+  }
 
   const SearchParams = await searchParams;
   const SortOrder = SearchParams?.sort === "asc" ? "ASC" : "DESC";

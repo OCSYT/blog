@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
-export async function GET() {
-  const HeadersList = await headers();
+export default async function Auth() {
+  const HeadersList = headers();
   const Host = HeadersList.get("host");
   const Protocol = process.env.NODE_ENV === "production" ? "https" : "http";
   const BaseUrl = `${Protocol}://${Host}`;
@@ -17,9 +17,9 @@ export async function GET() {
   });
 
   if (!UserRes.ok) {
-    return NextResponse.redirect(`${BaseUrl}/api/auth/discord`);
+    return null;
   }
 
   const UserData = await UserRes.json();
-  return NextResponse.json(UserData);
+  return UserData;
 }
