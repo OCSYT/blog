@@ -1,8 +1,12 @@
 import Database from "@/Components/Database";
 import Auth from "@/Components/Auth";
 
+const AllowedUserIDs = process.env.ALLOWED_USER_IDS
+  ? process.env.ALLOWED_USER_IDS.split(",")
+  : [];
+
 export async function DELETE(request, { params }) {
-  const { id } = await params;
+  const { id } = params;
   const CommentID = id;
   const AuthUser = await Auth();
 
@@ -15,12 +19,14 @@ export async function DELETE(request, { params }) {
     return new Response("Comment not found", { status: 404 });
   }
 
-  if (rows[0].userid !== AuthUser.ID) {
+  const IsAllowedUser = AllowedUserIDs.includes(AuthUser.ID);
+  const IsCommentOwner = rows[0].userid === AuthUser.ID;
+
+  if (!IsAllowedUser && !IsCommentOwner) {
     return new Response("Unauthorized", { status: 401 });
   }
 
   await Database.query("DELETE FROM BlogComments WHERE id = $1", [CommentID]);
-
 
   return new Response(null, { status: 204 });
 }

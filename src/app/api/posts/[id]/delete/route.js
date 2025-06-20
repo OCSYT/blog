@@ -1,6 +1,10 @@
 import Database from "@/Components/Database";
 import Auth from "@/Components/Auth";
 
+const AllowedUserIDs = process.env.ALLOWED_USER_IDS
+  ? process.env.ALLOWED_USER_IDS.split(",")
+  : [];
+
 export async function DELETE(request, { params }) {
   const PostID = params.id;
 
@@ -15,7 +19,12 @@ export async function DELETE(request, { params }) {
     return new Response("Post not found", { status: 404 });
   }
 
-  if (rows[0].userid !== AuthUser.ID) {
+
+  const IsAllowedUser = AllowedUserIDs.includes(AuthUser.ID);
+  const IsPostOwner = rows[0].userid === AuthUser.ID;
+
+
+  if (!IsAllowedUser && !IsPostOwner) {
     return new Response("Unauthorized", { status: 401 });
   }
 
