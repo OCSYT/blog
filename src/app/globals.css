@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+:root {
+  --rosewater: #f5e0dc;
+  --flamingo: #f2cdcd;
+  --pink: #f5c2e7;
+  --mauve: #cba6f7;
+  --red: #f38ba8;
+  --maroon: #eba0ac;
+  --peach: #fab387;
+  --yellow: #f9e2af;
+  --green: #a6e3a1;
+  --teal: #94e2d5;
+  --sky: #89dceb;
+  --sapphire: #74c7ec;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --text: #cdd6f4;
+  --subtext1: #bac2de;
+  --subtext0: #a6adc8;
+  --overlay2: #9399b2;
+  --overlay1: #7f849c;
+  --overlay0: #6c7086;
+  --surface2: #585b70;
+  --surface1: #45475a;
+  --surface0: #313244;
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+
+  --background: var(--base);
+  --foreground: var(--text);
+}
+
+/* Base styles */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, sans-serif;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--lavender);
+}
+
+/* Paragraphs, lists */
+p, li {
+  color: var(--subtext0);
+}
+
+ul, ol {
+  padding-left: 1.5em;
+}
+
+/* Links */
+a {
+  color: var(--blue);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--sapphire);
+}
+
+/* Buttons */
+button {
+  background-color: var(--surface1);
+  color: var(--text);
+  border: 1px solid var(--surface2);
+  padding: 0.5em 1em;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+button:hover {
+  background-color: var(--overlay1);
+}
+
+/* Accent Buttons */
+button.accent {
+  background-color: var(--peach);
+  color: var(--crust);
+  border: none;
+  font-weight: 600;
+}
+button.accent:hover {
+  background-color: var(--maroon);
+  color: var(--rosewater);
+}
+
+/* Danger Buttons */
+button.danger {
+  background-color: var(--red);
+  color: var(--crust);
+  border: none;
+}
+button.danger:hover {
+  background-color: var(--maroon);
+  color: var(--rosewater);
+}
+
+/* Inputs */
+input, textarea, select {
+  background-color: var(--surface0);
+  color: var(--text);
+  border: 1px solid var(--surface2);
+  padding: 0.5em;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--mauve);
+  box-shadow: 0 0 0 2px var(--mauve);
+}
+
+/* Code blocks */
+code, pre {
+  background-color: var(--mantle);
+  color: var(--green);
+  padding: 0.25em 0.5em;
+  border-radius: 0.25rem;
+  font-family: monospace;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--mauve);
+  padding-left: 1em;
+  color: var(--subtext1);
+  font-style: italic;
+}
+
+
+/* Horizontal Rule */
+hr {
+  border-color: var(--surface2);
+  margin: 2em 0;
+}
+
+li{
+  list-style-type: disc;
+}
+/* Headings with different sizes */
+h1 {
+  color: var(--lavender);
+  font-size: 2.5rem; /* Largest */
+  font-weight: 700;
+}
+
+h2 {
+  color: var(--lavender);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+h3 {
+  color: var(--lavender);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+h4 {
+  color: var(--lavender);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+h5 {
+  color: var(--lavender);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+h6 {
+  color: var(--lavender);
+  font-size: 1rem; /* Smallest */
+  font-weight: 500;
+}
