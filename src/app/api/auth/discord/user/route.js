@@ -1,4 +1,3 @@
-// app/api/auth/discord/user/route.js
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
