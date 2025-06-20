@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function Auth() {
-  const CookiesList = cookies();
+  const CookiesList = await cookies();
   const Host = CookiesList.get("host")?.value;
   const Protocol = process.env.NODE_ENV === "production" ? "https" : "http";
   const BaseUrl = `${Protocol}://${Host}`;
