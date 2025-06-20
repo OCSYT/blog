@@ -11,7 +11,7 @@ const AllowedUserIDs = process.env.ALLOWED_USER_IDS
 
 export default async function Page({ searchParams }) {
   const AuthUser = await Auth();
-  if (!AuthUser) {
+  if (!AuthUser || !AuthUser.ID) {
     return redirect("/api/auth/discord");
   }
 

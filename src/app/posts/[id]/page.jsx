@@ -32,7 +32,7 @@ export default async function PostPage({ params }) {
   );
 
   const AuthUser = await Auth();
-  if (!AuthUser) {
+  if (!AuthUser || !AuthUser.ID) {
     return redirect("/api/auth/discord");
   }
 

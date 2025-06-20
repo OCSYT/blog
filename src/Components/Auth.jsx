@@ -2,24 +2,32 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function Auth() {
-  const HeadersList = headers();
-  const Host = HeadersList.get("host");
-  const Protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-  const BaseUrl = `${Protocol}://${Host}`;
+  const headersList = headers();
+  const host = headersList.get("host");
+  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+  const baseUrl = `${protocol}://${host}`;
 
-  const Cookie = HeadersList.get("cookie") ?? "";
+  const cookie = headersList.get("cookie") ?? "";
 
-  const UserRes = await fetch(`${BaseUrl}/api/auth/discord/user`, {
-    headers: {
-      cookie: Cookie,
-    },
-    cache: "no-store",
-  });
+  try {
+    const userRes = await fetch(`${baseUrl}/api/auth/discord/user`, {
+      headers: {
+        cookie,
+      },
+      cache: "no-store",
+    });
 
-  if (!UserRes.ok) {
-    return null;
+    if (!userRes.ok) {
+      console.error("API Error:", userRes.status, userRes.statusText);
+      redirect("/api/auth/discord");
+    }
+
+    const userData = await userRes.json();
+    console.log("User Data:", userData);
+
+    return userData;
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    redirect("/api/auth/discord");
   }
-
-  const UserData = await UserRes.json();
-  return UserData;
 }
