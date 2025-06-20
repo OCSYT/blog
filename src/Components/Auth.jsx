@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function Auth() {
   const HeadersList = await headers();
@@ -15,7 +16,9 @@ export default async function Auth() {
     cache: "no-store",
   });
 
-  if (!UserRes.ok) return null;
+  if (!UserRes.ok) {
+    redirect(`${BaseUrl}/api/auth/discord`);
+  }
 
   const UserData = await UserRes.json();
   return UserData;
