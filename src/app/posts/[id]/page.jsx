@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 import CodeRenderer from "@/Components/CodeRenderer";
 
 export default async function PostPage({ params }) {
-  const PostID = params.id;
+  const PostID = (await params).id;
 
   const { rows: PostRows } = await Database.query(
     "SELECT * FROM BlogPosts WHERE id = $1",
