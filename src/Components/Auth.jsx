@@ -1,36 +1,33 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { headers as Headers } from "next/headers";
+import { redirect as Redirect } from "next/navigation";
 
-export default async function Authenticate() {
-  const CookieStore = await cookies();
-  const CookieString = CookieStore
-    .getAll()
-    .map((cookie) => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
-    .join("; ");
-
+export default async function Auth() {
+  const HeadersList = Headers();
+  const Host = HeadersList.get("host");
   const Protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-  const Host = process.env.HOST || "localhost:3000";
   const BaseUrl = `${Protocol}://${Host}`;
 
+  const Cookie = HeadersList.get("cookie") ?? "";
+
   try {
-    const UserResponse = await fetch(`${BaseUrl}/api/auth/discord/user`, {
+    const UserRes = await fetch(`${BaseUrl}/api/auth/discord/user`, {
       headers: {
-        Cookie: CookieString,
+        cookie: Cookie,
       },
       cache: "no-store",
     });
 
-    if (!UserResponse.ok) {
-      console.error("API Error:", UserResponse.status, UserResponse.statusText);
-      return redirect("/api/auth/discord");
+    if (!UserRes.ok) {
+      console.error("API Error:", UserRes.status, UserRes.statusText);
+      Redirect("/api/auth/discord");
     }
 
-    const UserData = await UserResponse.json();
+    const UserData = await UserRes.json();
     console.log("User Data:", UserData);
 
     return UserData;
   } catch (Error) {
     console.error("Fetch Error:", Error);
-    return redirect("/api/auth/discord");
+    Redirect("/api/auth/discord");
   }
 }
