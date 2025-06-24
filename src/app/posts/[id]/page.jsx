@@ -5,6 +5,7 @@ import CommentForm from "./CommentForm";
 import CommentList from "@/Components/CommentList";
 import ReactMarkdown from "react-markdown";
 import CodeRenderer from "@/Components/CodeRenderer";
+import { notFound } from "next/navigation";
 
 export default async function PostPage({ params }) {
   const PostID = (await params).id;
@@ -15,14 +16,7 @@ export default async function PostPage({ params }) {
   );
 
   if (PostRows.length === 0) {
-    return (
-      <main className="p-8 text-center">
-        <h1 className="text-3xl font-bold text-red-600">Post not found</h1>
-        <Link href="/" className="text-blue-600 hover:underline">
-          Go back
-        </Link>
-      </main>
-    );
+    notFound();
   }
 
   const Post = PostRows[0];
